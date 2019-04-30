@@ -1,0 +1,123 @@
+paths:
+  # 공통
+  /server_time:
+    get:
+      tags:
+      - "common"
+      
+      summary: "서버 시간"
+      
+      description: "서버의 시간을 반환합니다. (UTC + 9)"
+      
+      operationId: "getServerTime"
+      
+      consumes:
+      - "application/json; charset=utf-8"
+      
+      produces:
+      - "application/json; charset=utf-8"
+
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ServerTime"
+
+  /server_day:
+    get:
+      tags:
+      - "common"
+      
+      summary: "서버 요일"
+      
+      description: "서버의 요일을 반환합니다. (UTC + 9)"
+      
+      operationId: "getServerDay"
+      
+      consumes:
+      - "application/json; charset=utf-8"
+      
+      produces:
+      - "application/json; charset=utf-8"
+
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ServerDay"
+    
+  /current_version:
+    get:
+      tags:
+      - "common"
+      
+      summary: "클라이언트 버전"
+      
+      description: "최신 클라이언트 버전을 반환합니다."
+      
+      operationId: "getLatestClientVersion"
+      
+      consumes:
+      - "application/json; charset=utf-8"
+      
+      produces:
+      - "application/json; charset=utf-8"
+
+      parameters:
+      - name: "type"
+        in: "query"
+        description: "유저 기기 종류"
+        required: true
+        type: "array"
+        items:
+          type: "string"
+          enum:
+          - "android"
+          - "ios"
+          default: "android"
+
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/CurrentVersion"
+
+definitions:
+
+  ServerTime:
+    type: "object"
+    required:
+    - "time"
+    properties:
+      time:
+        type: "string"
+        example: "04/18/2019"
+        description: "서버 시간"
+
+  ServerDay:
+    type: "object"
+    required:
+    - "day"
+    properties:
+      time:
+        type: "string"
+        example: "fri"
+        description: "서버 요일"
+
+  CurrentVersion:
+    type: "object"
+    required:
+      - "current_version"
+    properties:
+      current_version:
+        type: "string"
+        example : "0.74"
+        description: "최신 버전"
+      version:
+        type: "string"
+        example : "0.74"
+        description: "최신 버전 (하위 호환)"
+      agent:
+        type: "string"
+        example: "android"
+        definitions: "플래폼"
