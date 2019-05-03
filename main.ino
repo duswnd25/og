@@ -29,7 +29,7 @@ uint32_t MIN_DEPLAY;
 void setup()
 {
     Serial.begin(9600);
-    HM10.begin(9600);
+    bluetooth.begin(9600);
     DHT.begin();
 
     sensor_t sensor;
