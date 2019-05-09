@@ -11,7 +11,6 @@ module.exports = {
 			env: {
 				// 시스템
 				NODE_ENV: 'development',
-				BUGSNAG_API_KEY: '',
 				// DASHBOARD
 				APP_ID: 'og-test',
 				APP_NAME: 'og-test',
