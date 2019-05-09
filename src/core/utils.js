@@ -1,6 +1,11 @@
 const createError = require('http-errors');
 const console = require('better-console');
 
+function getPointer(className, objectId) {
+	const Class = Parse.Object.extend(className);
+	const pointer = Class.createWithoutData(objectId);
+	return pointer;
+}
 // ObjectId로 객체 반환
 function getClientObject(clientId, inputKey) {
 	return new Promise(async function result(resolve, reject) {
@@ -25,4 +30,4 @@ function getClientObject(clientId, inputKey) {
 		}
 	});
 }
-module.exports = { getClientObject };
+module.exports = { getClientObject, getPointer };

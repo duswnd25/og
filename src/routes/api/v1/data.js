@@ -20,4 +20,10 @@ router.post('/:clientId/update/staus', async (req, res) => {
 	return res.status(200).json({ result: 'upload finish' });
 });
 
+router.get('/:clientId/datas', async (req, res) => {
+	const { clientId } = req.params;
+	const result = await dataDb.getClientData(clientId);
+	return res.status(200).json(result);
+});
+
 module.exports = router;

@@ -29,4 +29,30 @@ function updatePFCStatus(clientId, key, brightness, humidity, temperature) {
 	});
 }
 
-module.exports = { updatePFCStatus };
+function getClientData(clientId) {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const Data = Parse.Object.extend('Data');
+			const query = new Parse.Query(Data);
+			query.equalTo('client', util.getPointer('Client', clientId));
+			query.limit(100);
+			const queryResults = await query.find();
+			console.info(queryResults.length);
+			const result = [];
+
+			for (let index = 0; index < queryResults.length; index += 1) {
+				const brightness = queryResults[index].get('brightness');
+				const humidity = queryResults[index].get('humidity');
+				const temperature = queryResults[index].get('temperature');
+				const time = queryResults[index].createdAt;
+				result.push({ brightness, humidity, temperature, time });
+			}
+
+			return resolve(result);
+		} catch (error) {
+			return reject(error);
+		}
+	});
+}
+
+module.exports = { updatePFCStatus, getClientData };
