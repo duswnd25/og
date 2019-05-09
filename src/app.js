@@ -17,9 +17,11 @@ require('express-async-errors');
 const app = express();
 
 /** :::::::::::::::::: CONFIG * */
+/*
 const { parseServerConfig, parseDashboardConfig } = reqlib(
 	'/src/config/parse.config.js'
 );
+*/
 const config = reqlib('/src/config/global.config');
 
 /** :::::::::::::::::: EXPRESS SETUP * */
@@ -50,8 +52,8 @@ app.use('/', reqlib('/src/routes/index'));
 app.use('/api', reqlib('/src/routes/api/index'));
 
 app.use('/public', express.static(`${appRootPath}/public`));
-app.use('/parse', parseServerConfig);
-app.use('/dashboard', parseDashboardConfig);
+//app.use('/parse', parseServerConfig);
+//app.use('/dashboard', parseDashboardConfig);
 
 /** :::::::::::::::::: ERROR HANDLING * */
 // eslint-disable-next-line no-unused-vars
