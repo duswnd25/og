@@ -6,8 +6,8 @@
 	"homepage": "https://github.com/duswnd25/og",
 	"author": "YeonJung Kim",
 	"scripts": {
-		"start": "./node_modules/.bin/pm2-runtime ./env.prod.js",
-		"dev": "./node_modules/.bin/pm2-runtime ./env.dev.js",
+		"start": "./node_modules/.bin/pm2 ./env.prod.js",
+		"dev": "nodemon ./server",
 		"test": "./node_modules/.bin/mocha ./test/**/*.spec.js ./test/**/*.test.js  --recursive",
 		"lint": "./node_modules/.bin/eslint -c .eslintrc . --fix",
 		"check": "./node_modules/.bin/npm-check -u"

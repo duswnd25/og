@@ -18,13 +18,10 @@ require('express-async-errors');
 
 const app = express();
 
-const { parseServerConfig, parseDashboardConfig } = reqlib(
-	'/src/config/parse.config.js'
-);
-
 const config = reqlib('/src/config/global.config');
 
 if (config.isDevelopment()) {
+	config.devEnvSetup();
 	app.use(logger('dev'));
 	console.info('SERVER START IN DEV MODE');
 }
@@ -42,6 +39,10 @@ if (config.isProduction()) {
 	app.use(bugsnagMiddleware.requestHandler);
 	app.use(bugsnagMiddleware.errorHandler);
 }
+
+const { parseServerConfig, parseDashboardConfig } = reqlib(
+	'/src/config/parse.config.js'
+);
 
 /** :::::::::::::::::: EXPRESS SETUP * */
 app.use(timeout('20s'));
