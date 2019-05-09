@@ -7,18 +7,7 @@ const config = {
 	DASHBOARD: {
 		DASHBOARD_ID: process.env.DASHBOARD_ID,
 		DASHBOARD_PW: process.env.DASHBOARD_PW,
-		COOKIE_SESSION_SECRET: process.env.COOKIE_SESSION_SECRET,
-		PUSH: {
-			android: {
-				apiKey: process.env.FCM_API_KEY
-			},
-			ios: process.env.APPLE_APN || {
-				pfx: '',
-				passphrase: '', // optional password to your p12/PFX
-				bundleId: '',
-				production: IS_PRODUCTION
-			}
-		}
+		COOKIE_SESSION_SECRET: process.env.COOKIE_SESSION_SECRET
 	},
 	COMMON: {
 		DB_URL: process.env.MONGODB_URI,

@@ -11,7 +11,6 @@ const console = require('better-console');
 const appRootPath = require('app-root-path');
 
 const reqlib = appRootPath.require;
-const slack = require('./core/slack');
 
 require('express-async-errors');
 
@@ -23,27 +22,11 @@ const { parseServerConfig, parseDashboardConfig } = reqlib(
 );
 const config = reqlib('/src/config/global.config');
 
-/** :::::::::::::::::: BUG SNAG * */
-let bugsnagMiddleware;
-let bugsnagClient;
-
-if (config.isProduction()) {
-	console.log('SERVER RUN IN PRODUCTION MODE');
-	// eslint-disable-next-line global-require
-	const bugsnag = require('@bugsnag/js');
-	// eslint-disable-next-line global-require
-	const bugsnagExpress = require('@bugsnag/plugin-express');
-	bugsnagClient = bugsnag(process.env.BUGSNAG_API_KEY);
-	bugsnagClient.use(bugsnagExpress);
-	bugsnagMiddleware = bugsnagClient.getPlugin('express');
-	app.use(bugsnagMiddleware.requestHandler);
-}
-
 /** :::::::::::::::::: EXPRESS SETUP * */
 app.use(timeout('20s'));
 app.use(compression());
 app.use(cookieParser());
-app.use(favicon(path.join(`${appRootPath}/public/favicon`, 'favicon.ico')));
+// app.use(favicon(path.join(`${appRootPath}/public/favicon`, 'favicon.ico')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 if (!config.isProduction()) {
@@ -78,15 +61,7 @@ app.use((req, res, next) => {
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
-	if (config.isProduction() || err.code >= 500) {
-		bugsnagClient.notify(err);
-	}
 	return res.status(err.code || 500).send({ error: err.message });
 });
-
-if (config.isProduction()) {
-	app.use(bugsnagMiddleware.errorHandler);
-	slack.messageToSlack('SERVER START');
-}
 
 module.exports = { app };
