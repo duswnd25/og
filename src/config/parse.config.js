@@ -1,5 +1,6 @@
 const { ParseServer } = require('parse-server');
 const ParseDashboard = require('parse-dashboard');
+const appRootPath = require('app-root-path');
 
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
@@ -25,7 +26,7 @@ const parseServerConfig = new ParseServer({
 	appId: config.COMMON.APP_ID,
 	masterKey: config.COMMON.MASTER_KEY,
 	serverURL: config.COMMON.SERVER_URL,
-	cloud: 'src/cloud/main'
+	cloud: `${appRootPath}/src/cloud/main`
 	// push: config.DASHBOARD.PUSH
 });
 
