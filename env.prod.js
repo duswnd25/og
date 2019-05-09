@@ -4,7 +4,7 @@ module.exports = {
 			name: 'API',
 			script: './server.js',
 			instances: 1,
-			watch: true,
+			watch: false,
 			autorestart: true,
 			max_memory_restart: '384M',
 			// 개발 환경

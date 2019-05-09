@@ -25,11 +25,6 @@ module.exports = {
 				JAVASCRIPT_KEY: 'test',
 				MONGODB_URI: 'mongodb://test:test@localhost:63918/test',
 				REDIRECT_URL: 'http://localhost:3000'
-			},
-			// 배포 환경
-			env_production: {
-				// 시스템
-				NODE_ENV: 'production'
 			}
 		}
 	]
