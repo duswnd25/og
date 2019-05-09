@@ -11,6 +11,8 @@ const timeout = require('connect-timeout');
 const appRootPath = require('app-root-path');
 
 const reqlib = appRootPath.require;
+let bugsnagMiddleware;
+let bugsnagClient;
 
 require('express-async-errors');
 
@@ -21,6 +23,25 @@ const { parseServerConfig, parseDashboardConfig } = reqlib(
 );
 
 const config = reqlib('/src/config/global.config');
+
+if (config.isDevelopment()) {
+	app.use(logger('dev'));
+	console.info('SERVER START IN DEV MODE');
+}
+
+if (config.isProduction()) {
+	console.info('SERVER START IN PRODUCTION');
+	// eslint-disable-next-line global-require
+	const bugsnag = require('@bugsnag/js');
+	// eslint-disable-next-line global-require
+	const bugsnagExpress = require('@bugsnag/plugin-express');
+
+	bugsnagClient = bugsnag(process.env.BUGSNAG_API_KEY);
+	bugsnagClient.use(bugsnagExpress);
+	bugsnagMiddleware = bugsnagClient.getPlugin('express');
+	app.use(bugsnagMiddleware.requestHandler);
+	app.use(bugsnagMiddleware.errorHandler);
+}
 
 /** :::::::::::::::::: EXPRESS SETUP * */
 app.use(timeout('20s'));
@@ -58,16 +79,10 @@ app.use((req, res, next) => {
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
+	if (config.isProduction() || err.code >= 500) {
+		bugsnagClient.notify(err);
+	}
 	return res.status(err.code || 500).send({ error: err.message });
 });
-
-if (config.isDevelopment()) {
-	app.use(logger('dev'));
-	console.info('SERVER START IN DEV MODE');
-}
-
-if (config.isProduction()) {
-	console.info('SERVER START IN PRODUCTION');
-}
 
 module.exports = { app };
