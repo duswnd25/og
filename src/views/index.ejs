@@ -13,7 +13,7 @@
 		/>
 		<link rel="icon" type="image/png" href="/public/img/favicon.png" />
 		<title>
-			Black Dashboard by Creative Tim
+			OG : DASHBOARD
 		</title>
 		<!--     Fonts and icons     -->
 		<link
@@ -43,10 +43,10 @@
 									<div class="row">
 										<div class="col-sm-6 text-left">
 											<h5 class="card-category">
-												Total Shipments
+												Total Status
 											</h5>
 											<h2 class="card-title">
-												Performance
+												Status
 											</h2>
 										</div>
 										<div class="col-sm-6">
@@ -54,8 +54,10 @@
 												class="btn-group btn-group-toggle float-right"
 												data-toggle="buttons"
 											>
+
+											<% for(let index = 0; index < data.client.length;index+=1) {%>
 												<label
-													class="btn btn-sm btn-primary btn-simple active"
+													class="btn btn-sm btn-primary btn-simple"
 													id="0"
 												>
 													<input
@@ -65,7 +67,7 @@
 													/>
 													<span
 														class="d-none d-sm-block d-md-block d-lg-block d-xl-block"
-														>Accounts</span
+														>DEVICE</span
 													>
 													<span
 														class="d-block d-sm-none"
@@ -75,55 +77,15 @@
 														></i>
 													</span>
 												</label>
-												<label
-													class="btn btn-sm btn-primary btn-simple"
-													id="1"
-												>
-													<input
-														type="radio"
-														class="d-none d-sm-none"
-														name="options"
-													/>
-													<span
-														class="d-none d-sm-block d-md-block d-lg-block d-xl-block"
-														>Purchases</span
-													>
-													<span
-														class="d-block d-sm-none"
-													>
-														<i
-															class="tim-icons icon-gift-2"
-														></i>
-													</span>
-												</label>
-												<label
-													class="btn btn-sm btn-primary btn-simple"
-													id="2"
-												>
-													<input
-														type="radio"
-														class="d-none"
-														name="options"
-													/>
-													<span
-														class="d-none d-sm-block d-md-block d-lg-block d-xl-block"
-														>Sessions</span
-													>
-													<span
-														class="d-block d-sm-none"
-													>
-														<i
-															class="tim-icons icon-tap-02"
-														></i>
-													</span>
-												</label>
+												<%}%>
+												
 											</div>
 										</div>
 									</div>
 								</div>
 								<div class="card-body">
 									<div class="chart-area">
-										<canvas id="chartBig1"></canvas>
+										<canvas id="total-status-chart"></canvas>
 									</div>
 								</div>
 							</div>
@@ -138,7 +100,7 @@
 									</h5>
 									<h3 class="card-title">
 										<i
-											class="tim-icons icon-bell-55 text-primary"
+											class="tim-icons icon-sound-wave text-primary"
 										></i>
 										763,215
 									</h3>
@@ -156,14 +118,14 @@
 									<h5 class="card-category">Humidity</h5>
 									<h3 class="card-title">
 										<i
-											class="tim-icons icon-delivery-fast text-info"
+											class="tim-icons icon-chart-bar-32 text-info"
 										></i>
-										3,500€
+										<span id="humidity-average-value"></span>
 									</h3>
 								</div>
 								<div class="card-body">
 									<div class="chart-area">
-										<canvas id="CountryChart"></canvas>
+										<canvas id="humidity-chart"></canvas>
 									</div>
 								</div>
 							</div>
@@ -176,14 +138,14 @@
 									</h5>
 									<h3 class="card-title">
 										<i
-											class="tim-icons icon-send text-success"
+											class="tim-icons icon-bulb-63 text-success"
 										></i>
-										12,100K
+										<span id="brightness-average-value"></span>
 									</h3>
 								</div>
 								<div class="card-body">
 									<div class="chart-area">
-										<canvas id="chartLineGreen"></canvas>
+										<canvas id="brightness-chart"></canvas>
 									</div>
 								</div>
 							</div>
@@ -194,13 +156,11 @@
 					<div class="container-fluid">
 						<ul class="nav">
 							<li class="nav-item">
-								<a href="javascript:void(0)" class="nav-link">
-									OG
-								</a>
+							Project Maintainer 
 							</li>
 							<li class="nav-item">
-								<a href="javascript:void(0)" class="nav-link">
-									About Us
+								<a href="https://github.com/duswnd25" class="nav-link">
+									@duswnd25
 								</a>
 							</li>
 							<li class="nav-item">
@@ -217,7 +177,10 @@
 							<script>
 								document.write(new Date().getFullYear());
 							</script>
-							OG All Right Reserved. made with
+							<a href="https://github.com/duswnd25">
+									@duswnd25
+								</a>
+								All Right Reserved. made with
 							<i class="tim-icons icon-heart-2"></i> by
 							<a href="javascript:void(0)" target="_blank"
 								>Creative Tim</a
@@ -244,7 +207,7 @@
 		<!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
 		<script src="/public/js/black-dashboard.min.js?v=1.0.0"></script>
 		<!-- Black Dashboard DEMO methods, don't include it in your project! -->
-		<script src="/public/demo/demo.js"></script>
+		<script src="/public/js/init_data.js"></script>
 		<script>
 			$(document).ready(function() {
 				$().ready(function() {
@@ -366,8 +329,7 @@
 		</script>
 		<script>
 			$(document).ready(function() {
-				// Javascript method's body can be found in assets/js/demos.js
-				demo.initDashboardPageCharts();
+				initData.initDashboardPageCharts();
 			});
 		</script>
 	</body>
