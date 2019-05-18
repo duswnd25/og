@@ -172,7 +172,6 @@ async function updateConfig() {
 			}/${status.humiditySetValue}/${status.automode === true ? 1 : 0}/${
 				status.hum === true ? 1 : 0
 			}/${status.fan === true ? 1 : 0}/${status.led === true ? 1 : 0}/`;
-			console.warn(command);
 			port.write(command);
 			return resolve();
 		} catch (error) {
