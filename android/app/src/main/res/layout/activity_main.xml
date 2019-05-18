@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar
+                android:id="@+id/main_humidity_current_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
+                app:rcBackgroundColor="@color/custom_progress_background"
+                app:rcIconBackgroundColor="@color/custom_progress_blue_header"
+                app:rcIconPadding="6dp"
+                app:rcIconSize="40dp"
+                app:rcIconSrc="@drawable/ic_humidity"
+                app:rcMax="100"
+                app:rcProgress="30"
+                app:rcProgressColor="@color/custom_progress_blue_progress"
+                app:rcRadius="8dp"
+                app:rcSecondaryProgress="50"
+                app:rcSecondaryProgressColor="@color/custom_progress_blue_progress_half" />
+
+            <com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar
+                android:id="@+id/main_temperature_current_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
+                app:rcBackgroundColor="@color/custom_progress_background"
+                app:rcIconBackgroundColor="@color/custom_progress_red_header"
+                app:rcIconPadding="6dp"
+                app:rcIconSize="40dp"
+                app:rcIconSrc="@drawable/ic_temperature"
+                app:rcMax="40"
+                app:rcProgress="20"
+                app:rcProgressColor="@color/custom_progress_red_progress"
+                app:rcRadius="8dp"
+                app:rcSecondaryProgress="32"
+                app:rcSecondaryProgressColor="@color/custom_progress_red_progress_half" />
+
+            <com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar
+                android:id="@+id/main_brightness_current_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
+                app:rcBackgroundColor="@color/custom_progress_background"
+                app:rcIconBackgroundColor="@color/custom_progress_orange_header"
+                app:rcIconPadding="6dp"
+                app:rcIconSize="40dp"
+                app:rcIconSrc="@drawable/ic_brightness"
+                app:rcMax="1000"
+                app:rcProgress="52"
+                app:rcProgressColor="@color/custom_progress_orange_progress"
+                app:rcRadius="8dp"
+                app:rcSecondaryProgress="500"
+                app:rcSecondaryProgressColor="@color/custom_progress_orange_progress_half" />
+
+            <TextView
+                android:id="@+id/main_status_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
+                tools:text="AUT : ---\nFAN : ---\nLED : ---\nHUM : ---" />
+        </LinearLayout>
+    </ScrollView>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/main_control_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            tools:visibility="visible"
+            android:visibility="invisible">
+
+            <Switch
+                android:id="@+id/main_enable_auto_mode_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
+                android:checked="true"
+                android:text="자동 모드" />
+
+            <Switch
+                android:id="@+id/main_enable_led_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
+                android:checked="true"
+                android:text="LED" />
+
+            <Switch
+                android:id="@+id/main_enable_fan_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
+                android:checked="true"
+                android:text="쿨러" />
+
+            <Switch
+                android:id="@+id/main_enable_humidifier_enable_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
+                android:checked="true"
+                android:text="가습기" />
+
+            <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                android:id="@+id/main_humidity_set_seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
+                app:dsb_indicatorColor="@color/custom_progress_blue_header"
+                app:dsb_max="100"
+                app:dsb_min="0"
+                app:dsb_progressColor="@color/custom_progress_blue_progress"
+                app:dsb_trackColor="@color/custom_progress_blue_progress_half"
+                app:dsb_value="50" />
+
+            <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                android:id="@+id/main_temperature_set_seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
+                app:dsb_indicatorColor="@color/custom_progress_red_header"
+                app:dsb_max="40"
+                app:dsb_min="0"
+                app:dsb_progressColor="@color/custom_progress_red_progress"
+                app:dsb_trackColor="@color/custom_progress_red_progress_half"
+                app:dsb_value="30" />
+
+            <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                android:id="@+id/main_brightness_set_seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="10dp"
+                app:dsb_indicatorColor="@color/custom_progress_orange_header"
+                app:dsb_max="1000"
+                app:dsb_min="0"
+                app:dsb_progressColor="@color/custom_progress_orange_progress"
+                app:dsb_trackColor="@color/custom_progress_orange_progress_half"
+                app:dsb_value="500" />
+
+            <Button
+                android:id="@+id/main_send_command_button"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:text="전달" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
