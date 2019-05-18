@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, shrink-to-fit=no"
+		/>
+		<link
+			rel="apple-touch-icon"
+			sizes="76x76"
+			href="/public/img/apple-icon.png"
+		/>
+		<link rel="icon" type="image/png" href="/public/img/favicon.png" />
+		<title>
+			OG : DASHBOARD
+		</title>
+		<!--     Fonts and icons     -->
+		<link
+			href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://use.fontawesome.com/releases/v5.0.6/css/all.css"
+			rel="stylesheet"
+		/>
+		<!-- Nucleo Icons -->
+		<link href="/public/css/nucleo-icons.css" rel="stylesheet" />
+		<!-- CSS Files -->
+		<link href="/public/css/black-dashboard.css?v=1.0.0" rel="stylesheet" />
+	</head>
+
+	<body class="">
+		<!--   Core JS Files   -->
+		<script src="/public/js/core/jquery.min.js"></script>
+		<script src="/public/js/core/popper.min.js"></script>
+		<script src="/public/js/core/bootstrap.min.js"></script>
+		<script src="/public/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+		<!-- Chart JS -->
+		<script src="/public/js/plugins/chartjs.min.js"></script>
+		<!--  Notifications Plugin    -->
+		<script src="/public/js/plugins/bootstrap-notify.js"></script>
+		<!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
+		<script src="/public/js/black-dashboard.min.js?v=1.0.0"></script>
+		<!-- Black Dashboard DEMO methods, don't include it in your project! -->
+
+		<div class="wrapper">
+			<div class="sidebar">
+				<!--
+        Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red"
+    -->
+				<div class="sidebar-wrapper">
+					<div class="logo">
+						<a
+							href="javascript:void(0)"
+							class="simple-text logo-mini"
+						>
+							OG
+						</a>
+						<a
+							href="javascript:void(0)"
+							class="simple-text logo-normal"
+						>
+							OG-BOARD
+						</a>
+					</div>
+					<ul class="nav">
+						<li>
+							<a href="/">
+								<i class="tim-icons icon-chart-pie-36"></i>
+								<p>Dashboard</p>
+							</a>
+						</li>
+						<li>
+							<a href="/hour">
+								<i class="tim-icons icon-chart-pie-36"></i>
+								<p>Hourly</p>
+							</a>
+						</li>
+						<li>
+							<a href="/total">
+								<i class="tim-icons icon-components"></i>
+								<p>Total</p>
+							</a>
+						</li>
+						<li>
+							<a href="/table">
+								<i class="tim-icons icon-align-left-2"></i>
+								<p>Table</p>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="main-panel">
+				<nav
+					class="navbar navbar-expand-lg navbar-absolute navbar-transparent"
+				>
+					<div class="container-fluid">
+						<div class="navbar-wrapper">
+							<div class="navbar-toggle d-inline">
+								<button type="button" class="navbar-toggler">
+									<span
+										class="navbar-toggler-bar bar1"
+									></span>
+									<span
+										class="navbar-toggler-bar bar2"
+									></span>
+									<span
+										class="navbar-toggler-bar bar3"
+									></span>
+								</button>
+							</div>
+						</div>
+					</div>
+				</nav>
+				<div class="content">
+					<%- include(data.page, data)%>
+				</div>
+
+				<footer class="footer">
+					<div class="container-fluid">
+						<ul class="nav">
+							<li class="nav-item">
+								Project Maintainer
+							</li>
+							<li class="nav-item">
+								<a
+									href="https://github.com/duswnd25"
+									class="nav-link"
+								>
+									@duswnd25
+								</a>
+							</li>
+							<li class="nav-item">
+								<a
+									href="https://duswnd25.github.io"
+									class="nav-link"
+								>
+									Blog
+								</a>
+							</li>
+						</ul>
+						<div class="copyright">
+							©
+							<script>
+								document.write(new Date().getFullYear());
+							</script>
+							<a href="https://github.com/duswnd25">
+								@duswnd25
+							</a>
+							All Right Reserved. made with
+							<i class="tim-icons icon-heart-2"></i> by
+							<a href="javascript:void(0)" target="_blank"
+								>Creative Tim</a
+							>
+							for a better web.
+						</div>
+					</div>
+				</footer>
+			</div>
+		</div>
+	</body>
+</html>

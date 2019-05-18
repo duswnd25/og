@@ -1,0 +1,61 @@
+<style>
+	.table-responsive {
+		overflow: hidden;
+	}
+</style>
+<div class="row">
+	<div class="col-md-12">
+		<div class="card ">
+			<div class="card-body">
+				<div class="table-responsive">
+					<table class="table tablesorter " id="">
+						<thead class=" text-primary">
+							<tr>
+								<th class="text-center">
+									Client
+								</th>
+								<th class="text-center">
+									Brightness
+								</th>
+								<th class="text-center">
+									Humidity
+								</th>
+								<th class="text-center">
+									Temperature
+								</th>
+								<th class="text-center">
+									Time
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<%= JSON.stringify(data.log.chart.Brightness) %> <%
+							for(var index = data.log.chart.time.length -1; index
+							>=0 ; index-=1){%>
+							<tr>
+								<td class="text-center">
+									<%= data.client %>
+								</td>
+								<td class="text-center">
+									<%= data.log.chart.brightness.value[index]
+									%>
+								</td>
+								<td class="text-center">
+									<%= data.log.chart.humidity.value[index] %>
+								</td>
+								<td class="text-center">
+									<%= data.log.chart.temperature.value[index]
+									%>
+								</td>
+								<td class="text-center">
+									<%= data.log.chart.time[index] %>
+								</td>
+							</tr>
+							<%}%>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

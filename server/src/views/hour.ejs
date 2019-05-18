@@ -1,0 +1,107 @@
+<div class="row">
+	<div class="col-12">
+		<div class="card card-chart">
+			<div class="card-header ">
+				<div class="row">
+					<div class="col-sm-6 text-left">
+						<h5 class="card-category">
+							Total Status
+						</h5>
+						<h2 class="card-title">
+							Status
+						</h2>
+					</div>
+					<div class="col-sm-6">
+						<div
+							class="btn-group btn-group-toggle float-right"
+							data-toggle="buttons"
+						>
+							<% for(let index = 0; index <
+							data.client.length;index+=1) {%>
+							<label
+								class="btn btn-sm btn-primary btn-simple"
+								id="0"
+							>
+								<input type="radio" name="options" checked />
+								<span
+									class="d-none d-sm-block d-md-block d-lg-block d-xl-block"
+									>DEVICE</span
+								>
+								<span class="d-block d-sm-none">
+									<i class="tim-icons icon-single-02"></i>
+								</span>
+							</label>
+							<%}%>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="card-body">
+				<div class="chart-area">
+					<canvas id="total-status-chart"></canvas>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-4">
+		<div class="card card-chart">
+			<div class="card-header">
+				<h5 class="card-category">
+					Temperature
+				</h5>
+				<h3 class="card-title">
+					<i class="tim-icons icon-sound-wave text-primary"></i>
+					<span id="temperature-average-value"></span>
+				</h3>
+			</div>
+			<div class="card-body">
+				<div class="chart-area">
+					<canvas id="chartLinePurple"></canvas>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-4">
+		<div class="card card-chart">
+			<div class="card-header">
+				<h5 class="card-category">Humidity</h5>
+				<h3 class="card-title">
+					<i class="tim-icons icon-chart-bar-32 text-info"></i>
+					<span id="humidity-average-value"></span>
+				</h3>
+			</div>
+			<div class="card-body">
+				<div class="chart-area">
+					<canvas id="humidity-chart"></canvas>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-4">
+		<div class="card card-chart">
+			<div class="card-header">
+				<h5 class="card-category">
+					Brightness
+				</h5>
+				<h3 class="card-title">
+					<i class="tim-icons icon-bulb-63 text-success"></i>
+					<span id="brightness-average-value"></span>
+				</h3>
+			</div>
+			<div class="card-body">
+				<div class="chart-area">
+					<canvas id="brightness-chart"></canvas>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="/public/js/init_data.js"></script>
+<script>
+	$(document).ready(function() {
+		chartData.initData(<%- JSON.stringify(data.log) %>);
+		});
+</script>
