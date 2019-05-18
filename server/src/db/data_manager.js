@@ -4,21 +4,15 @@ const moment = require('moment-timezone');
 const util = reqlib('/src/core/utils.js');
 
 // update pfc status
-function updatePFCStatus(clientId, key, brightness, humidity, temperature) {
+function createLog(clientId, key, brightness, humidity, temperature) {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const clientObject = await util.getClientObject(clientId, key);
 			const Data = Parse.Object.extend('Data');
 			const status = new Data();
 			status.set('brightness', Number.parseInt(brightness, 10));
-			status.set(
-				'humidity',
-				Number.parseFloat(Number.parseFloat(humidity).toFixed(3))
-			);
-			status.set(
-				'temperature',
-				Number.parseFloat(Number.parseFloat(temperature).toFixed(3))
-			);
+			status.set('humidity', Number.parseInt(humidity, 10));
+			status.set('temperature', Number.parseInt(temperature, 10));
 			status.set('client', clientObject);
 			await status.save();
 			return resolve();
@@ -28,53 +22,66 @@ function updatePFCStatus(clientId, key, brightness, humidity, temperature) {
 	});
 }
 
-// update pfc status
-function updateAverageValue(clientId, key, brightness, humidity, temperature) {
+function updateClientStatus(
+	clientId,
+	key,
+	brightness,
+	humidity,
+	temperature,
+	automode,
+	fan,
+	led,
+	hum,
+	image
+) {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const year = parseInt(moment().format('YYYY'), 10);
-			const month = parseInt(moment().format('MM'), 10);
-			const date = parseInt(moment().format('DD'), 10);
-			const hour = parseInt(moment().format('hh'), 10);
-			const clientObject = await util.getClientObject(clientId, key);
-			const Hour = Parse.Object.extend('HourData');
-			const query = new Parse.Query(Hour);
-			query.equalTo('client', clientObject);
-			query.equalTo('year', year);
-			query.equalTo('month', month);
-			query.equalTo('date', date);
-			query.equalTo('hour', hour);
-			let recentData = await query.first();
+			const Client = Parse.Object.extend('Client');
+			const query = new Parse.Query(Client);
+			const queryResult = await query.get(clientId);
 
-			if (recentData === undefined) {
-				recentData = new Hour();
-				recentData.set('client', clientObject);
-				recentData.set('year', year);
-				recentData.set('month', month);
-				recentData.set('date', date);
-				recentData.set('hour', hour);
-				recentData.set('count', 0);
-				recentData.set('brightness', 0);
-				recentData.set('humidity', 0.0);
-				recentData.set('temperature', 0.0);
+			if (queryResult.get('key') !== key) {
+				return reject();
 			}
-			recentData.set(
-				'brightness',
-				parseInt(recentData.get('brightness'), 10) +
-					parseInt(brightness, 10)
-			);
-			recentData.set(
-				'humidity',
-				parseFloat(recentData.get('humidity') + parseFloat(humidity))
-			);
-			recentData.set(
-				'temperature',
-				parseFloat(
-					recentData.get('temperature') + parseFloat(temperature)
-				)
-			);
-			recentData.increment('count');
+
+			queryResult.set('status', {
+				brightness,
+				humidity,
+				temperature,
+				automode,
+				fan,
+				led,
+				hum,
+				image
+			});
+
+			await queryResult.save();
+			return resolve();
+		} catch (error) {
+			return reject(error);
+		}
+	});
+}
+
+// update pfc status
+function updateHalftimeValue(clientId, key, brightness, humidity, temperature) {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const Client = Parse.Object.extend('Client');
+			const query = new Parse.Query(Client);
+			const clientObject = await query.get(clientId);
+
+			if (clientObject.get('key') !== key) {
+				return reject();
+			}
+
+			const Halftime = Parse.Object.extend('Halftime');
+			const recentData = new Halftime();
+			recentData.set('brightness', parseInt(brightness, 10));
+			recentData.set('humidity', parseInt(humidity, 10));
+			recentData.set('temperature', parseInt(temperature, 10));
 			await recentData.save();
+
 			return resolve();
 		} catch (error) {
 			return reject(error);
@@ -175,9 +182,38 @@ function getClientHourlyData(clientId) {
 	});
 }
 
+function getClientStatus(clientId) {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const Client = Parse.Object.extend('Client');
+			const query = new Parse.Query(Client);
+			const queryResult = await query.get(clientId);
+			return resolve(queryResult.get('status'));
+		} catch (error) {
+			return reject(error);
+		}
+	});
+}
+
+function getClientConfig(clientId) {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const Client = Parse.Object.extend('Client');
+			const query = new Parse.Query(Client);
+			const queryResult = await query.get(clientId);
+			return resolve(queryResult.get('config'));
+		} catch (error) {
+			return reject(error);
+		}
+	});
+}
+
 module.exports = {
-	updatePFCStatus,
+	createLog,
 	getClientData,
 	getClientHourlyData,
-	updateAverageValue
+	updateHalftimeValue,
+	updateClientStatus,
+	getClientStatus,
+	getClientConfig
 };

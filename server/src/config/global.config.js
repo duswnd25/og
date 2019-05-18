@@ -21,8 +21,7 @@ function envInit(nodeEnv) {
 		// PARSE
 		MASTER_KEY: 'test',
 		JAVASCRIPT_KEY: 'test',
-		MONGODB_URI:
-			'',
+		MONGODB_URI: '',
 		REDIRECT_URL: 'http://localhost:3000'
 	};
 
