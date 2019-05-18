@@ -11,8 +11,8 @@
 
 // hardware enable value set
 int brightnessSetValue = 500;
-float temperatureSetValue = 30;
-float humiditySetValue = 0.5;
+int temperatureSetValue = 30;
+int humiditySetValue = 50;
 
 // control hardware flag
 bool isAutoMode = true;
@@ -24,6 +24,7 @@ bool isCommandInput = false;
 // value change flag
 bool isHardwareStatusChange = false;
 bool isHardwareEnableValueChange = false;
+bool isPrintSensorData = false;
 
 // 온습도
 DHT_Unified DHT(TEM_HUM_SENSOR, DHT11);
@@ -69,60 +70,78 @@ void switchHardwareStatus(int target, bool flag)
     digitalWrite(target, flag ? LOW : HIGH);
 }
 
-void parsingCommand(String input)
+void parsingCommand(String sData)
 {
-    char token = ':';
+
+    //원본 복사
+    String sCopy = sData;
+    sCopy.trim();
+    sCopy.toUpperCase();
+
+    if (sCopy.equals("DATA"))
+    {
+        isPrintSensorData = true;
+        return;
+    }
+
+    char token = '/';
+    int commandIndex = 0;
     int tokenIndex = 0;
 
-    //copy original string
-    String sCopy = input;
-    String value = "";
+    // brightnessSetValue/temperatureSetValue/humiditySetValue/automode/humidity/fan/led/
+    // default command is 500/50/50/1/1/1/1/
+    // don't forget to add / to last
 
-    tokenIndex = sCopy.indexOf(token);
+    while (true)
+    {
+        tokenIndex = sCopy.indexOf(token);
 
-    // command
-    String command = sCopy.substring(0, tokenIndex);
-    command.trim();
-    command.toUpperCase();
+        if (-1 != tokenIndex)
+        {
+            String sTemp = sCopy.substring(0, tokenIndex);
 
-    // value
-    value = sCopy.substring(tokenIndex + 1, sCopy.length());
-    value.trim();
-    value.toUpperCase();
+            switch (commandIndex)
+            {
+            case 0:
+                brightnessSetValue = sTemp.toInt();
+                isHardwareEnableValueChange = true;
+                break;
+            case 1:
+                temperatureSetValue = sTemp.toInt();
+                isHardwareEnableValueChange = true;
+                break;
+            case 2:
+                humiditySetValue = sTemp.toInt();
+                isHardwareEnableValueChange = true;
+                break;
+            case 3:
+                switchHardwareStatus(STATUS_LED, (sTemp.toInt() == 1));
+                break;
+            case 4:
+                switchHardwareStatus(HUMIDITY, (sTemp.toInt() == 1));
+                break;
+            case 5:
+                switchHardwareStatus(FAN, (sTemp.toInt() == 1));
+                break;
+            case 6:
+                switchHardwareStatus(LED, (sTemp.toInt() == 1));
+                break;
+            default:
+                break;
+            }
 
-    if (command.equals("LED"))
-    {
-        switchHardwareStatus(LED, value.equals("TRUE") ? true : false);
-    }
-    else if (command.equals("HUM"))
-    {
-        switchHardwareStatus(HUMIDITY, value.equals("TRUE") ? true : false);
-    }
-    else if (command.equals("FAN"))
-    {
-        switchHardwareStatus(FAN, value.equals("TRUE") ? true : false);
-    }
-    else if (command.equals("AUTO"))
-    {
-        switchHardwareStatus(STATUS_LED, value.equals("TRUE") ? true : false);
-    }
-    else if (command.equals("BRIGHTNESS"))
-    {
-        isHardwareEnableValueChange = true;
-        brightnessSetValue = value.toInt();
-    }
-    else if (command.equals("HUMIDITY"))
-    {
-        isHardwareEnableValueChange = true;
-        humiditySetValue = value.toFloat();
-    }
-    else if (command.equals("TEMPERATURE"))
-    {
-        isHardwareEnableValueChange = true;
-        temperatureSetValue = value.toFloat();
-    }
+            sCopy = sCopy.substring(tokenIndex + 1);
+        }
+        else
+        {
+            // end
+            isCommandInput = false;
+            break;
+        }
 
-    isCommandInput = false;
+        // to next
+        ++commandIndex;
+    }
 }
 
 void setup()
@@ -146,6 +165,9 @@ void setup()
 void loop()
 {
     String command = "";
+    isHardwareStatusChange = false;
+    isHardwareEnableValueChange = false;
+    isPrintSensorData = false;
 
     while (Serial.available())
     {
@@ -193,7 +215,7 @@ void loop()
     }
 
     // print device status
-    if (isHardwareStatusChange == true)
+    if (isHardwareStatusChange)
     {
         Serial.print("AUTO ENABLE : ");
         Serial.println(isAutoMode ? "TRUE" : "FALSE");
@@ -206,7 +228,7 @@ void loop()
     }
 
     // print sensor set value
-    if (isHardwareEnableValueChange == true)
+    if (isHardwareEnableValueChange)
     {
         Serial.print("BRIGHTNESS SET : ");
         Serial.println(brightnessSetValue);
@@ -219,18 +241,17 @@ void loop()
     }
 
     // print sensor value
+    if (isPrintSensorData)
+    {
+        Serial.print("BRIGHTNESS : ");
+        Serial.println(brightnessValue);
 
-    Serial.print("BRIGHTNESS : ");
-    Serial.println(brightnessValue);
+        Serial.print("TEMPERATURE : ");
+        Serial.println(temperatureValue);
 
-    Serial.print("TEMPERATURE : ");
-    Serial.println(temperatureValue);
-
-    Serial.print("HUMIDITY : ");
-    Serial.println(humidityValue);
-
-    isHardwareStatusChange = false;
-    isHardwareEnableValueChange == false;
+        Serial.print("HUMIDITY : ");
+        Serial.println(humidityValue);
+    }
 
     delay(MIN_DEPLAY);
 }
