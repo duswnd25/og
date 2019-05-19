@@ -23,13 +23,12 @@ const cameraOptions = {
 	encoding: 'jpg',
 	output: './pic.jpg',
 	q: 50,
-	timelapse: 1000,
+	mode: 'photo',
 	nopreview: true,
 	th: '0:0:0'
 };
 
 const camera = new RaspiCam(cameraOptions);
-camera.start();
 
 // listen for the "start" event triggered when the start method has been successfully initiated
 camera.on('start', () => {
@@ -127,7 +126,7 @@ function updateClientStatus() {
 	return new Promise(async (resolve, reject) => {
 		try {
 			console.info('UPDATE STATUS');
-
+			camera.start();
 			const currentImage = fs.readFileSync('./pic.jpg');
 			status.image = new Buffer(currentImage).toString('base64');
 
