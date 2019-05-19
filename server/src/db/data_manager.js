@@ -54,9 +54,13 @@ function updateClientStatus(
 				hum
 			});
 
+			const file = fs.writeFileSync(
+				'pic.jpg',
+				new Buffer(image, 'base64')
+			);
 			const file = new Parse.File(
 				'pic.jpg',
-				new Buffer(image).toString('binary'),
+				fs.readFileSync('./pic.jpg'),
 				'image/jpg'
 			);
 
