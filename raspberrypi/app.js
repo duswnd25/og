@@ -31,6 +31,26 @@ const cameraOptions = {
 const camera = new RaspiCam(cameraOptions);
 camera.start();
 
+// listen for the "start" event triggered when the start method has been successfully initiated
+camera.on('start', () => {
+	// do stuff
+});
+
+// listen for the "read" event triggered when each new photo/video is saved
+camera.on('read', (err, timestamp, filename) => {
+	// do stuff
+});
+
+// listen for the "stop" event triggered when the stop method was called
+camera.on('stop', () => {
+	// do stuff
+});
+
+// listen for the process to exit when the timeout has been reached
+camera.on('exit', () => {
+	// do stuff
+});
+
 const status = {
 	brightnessSetValue: 500,
 	temperatureSetValue: 50,
