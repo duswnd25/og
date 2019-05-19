@@ -53,7 +53,10 @@ function updateClientStatus(
 				led,
 				hum
 			});
-			queryResult.set('image', new Parse.File(image, 'image/png'));
+			queryResult.set(
+				'image',
+				new Parse.File('pic.jpg', image, 'image/png')
+			);
 
 			await queryResult.save();
 			return resolve();
