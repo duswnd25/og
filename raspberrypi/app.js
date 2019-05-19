@@ -1,6 +1,7 @@
 const SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline');
 const console = require('better-console');
+const RaspiCam = require('raspicam');
 const rp = require('request-promise-native');
 
 const isWin = process.platform === 'win32';
@@ -13,6 +14,21 @@ const baseUrl =
 const clientId = 'mCcaI95vzy';
 const clientKey =
 	'3bb8d4f4ccf57c5c927cb54191f77618e987b644d60d419f862c8f280630fff9b157422e27bd9b118921543d58c4506b2acef2d3f53544f0722187219e2a88ac';
+
+const cameraOptions = {
+	width: 600,
+	height: 420,
+	awb: 'off',
+	encoding: 'jpg',
+	output: './pic.jpg',
+	q: 50,
+	timelapse: 1000,
+	nopreview: true,
+	th: '0:0:0'
+};
+
+const camera = new RaspiCam(cameraOptions);
+camera.start();
 
 const status = {
 	brightnessSetValue: 500,

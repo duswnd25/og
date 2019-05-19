@@ -1,34 +1,35 @@
 {
-  "name": "raspberrypi",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "node app",
-    "dev": "./node_modules/.bin/nodemon app",
-    "lint": "./node_modules/.bin/eslint -c .eslintrc . --fix",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@serialport/parser-readline": "^2.0.2",
-    "app-root-path": "^2.2.1",
-    "better-console": "^1.0.1",
-    "pm2": "^3.5.0",
-    "request": "^2.88.0",
-    "request-promise-native": "^1.0.7",
-    "serialport": "^7.1.5"
-  },
-  "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "13.1.0",
-    "eslint-config-prettier": "^4.2.0",
-    "eslint-plugin-import": "^2.17.2",
-    "eslint-plugin-prettier": "^3.1.0",
-    "mocha": "^6.1.4",
-    "nodemon": "^1.19.0",
-    "npm-check": "^5.9.0",
-    "prettier": "^1.17.0"
-  }
+	"name": "og-raspberrypi",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"start": "node app",
+		"dev": "./node_modules/.bin/nodemon app",
+		"lint": "./node_modules/.bin/eslint -c .eslintrc . --fix",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@serialport/parser-readline": "^2.0.2",
+		"app-root-path": "^2.2.1",
+		"better-console": "^1.0.1",
+		"pm2": "^3.5.0",
+		"raspicam": "^0.2.14",
+		"request": "^2.88.0",
+		"request-promise-native": "^1.0.7",
+		"serialport": "^7.1.5"
+	},
+	"devDependencies": {
+		"eslint": "^5.16.0",
+		"eslint-config-airbnb-base": "13.1.0",
+		"eslint-config-prettier": "^4.2.0",
+		"eslint-plugin-import": "^2.17.2",
+		"eslint-plugin-prettier": "^3.1.0",
+		"mocha": "^6.1.4",
+		"nodemon": "^1.19.0",
+		"npm-check": "^5.9.0",
+		"prettier": "^1.17.0"
+	}
 }
