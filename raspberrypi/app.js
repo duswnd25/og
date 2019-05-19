@@ -65,7 +65,7 @@ const status = {
 	image: ''
 };
 
-const port = new SerialPort(isWin ? 'COM4' : '/dev/ttyUSB0', {
+const port = new SerialPort(isWin ? 'COM4' : '/dev/ttyACM0', {
 	baudRate: 9600,
 	autoOpen: false
 });
