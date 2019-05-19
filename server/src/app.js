@@ -8,6 +8,7 @@ const console = require('better-console');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const timeout = require('connect-timeout');
+const bodyParser = require('body-parser');
 const appRootPath = require('app-root-path');
 
 const reqlib = appRootPath.require;
@@ -48,6 +49,7 @@ const { parseServerConfig, parseDashboardConfig } = reqlib(
 /** :::::::::::::::::: EXPRESS SETUP * */
 app.use(timeout('20s'));
 app.use(compression());
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser());
 app.use(favicon(path.join(`${appRootPath}/public/favicon`, 'favicon.ico')));
 app.use(express.json());
