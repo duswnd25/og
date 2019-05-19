@@ -57,13 +57,13 @@ function updateClientStatus(
 				hum
 			});
 
-			const tempFile = fs.writeFileSync(
-				`${appRootPath}/temp/pic.jpg`,
+			fs.writeFileSync(
+				`${appRootPath}/pic.jpg`,
 				new Buffer(image, 'base64')
 			);
 			const file = new Parse.File(
 				'pic.jpg',
-				fs.readFileSync(`${appRootPath}/temp/pic.jpg`),
+				fs.readFileSync(`${appRootPath}/pic.jpg`),
 				'image/jpg'
 			);
 
