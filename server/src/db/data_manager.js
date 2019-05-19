@@ -1,5 +1,6 @@
 const reqlib = require('app-root-path').require;
 const moment = require('moment-timezone');
+const fs = require('fs');
 
 const util = reqlib('/src/core/utils.js');
 
@@ -54,7 +55,7 @@ function updateClientStatus(
 				hum
 			});
 
-			const file = fs.writeFileSync(
+			const tempFile = fs.writeFileSync(
 				'pic.jpg',
 				new Buffer(image, 'base64')
 			);
