@@ -44,8 +44,6 @@ function updateClientStatus(
 				return reject();
 			}
 
-			const bitmap = new Buffer(image, 'base64');
-
 			queryResult.set('status', {
 				brightness,
 				humidity,
@@ -55,7 +53,7 @@ function updateClientStatus(
 				led,
 				hum
 			});
-			queryResult.set('image', new Parse.File(bitmap, 'image/png'));
+			queryResult.set('image', new Parse.File(image, 'image/png'));
 
 			await queryResult.save();
 			return resolve();
