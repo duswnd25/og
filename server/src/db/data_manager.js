@@ -1,6 +1,8 @@
-const reqlib = require('app-root-path').require;
+const appRootPath = require('app-root-path');
 const moment = require('moment-timezone');
 const fs = require('fs');
+
+const reqlib = appRootPath.require;
 
 const util = reqlib('/src/core/utils.js');
 
@@ -56,12 +58,12 @@ function updateClientStatus(
 			});
 
 			const tempFile = fs.writeFileSync(
-				'pic.jpg',
+				`${appRootPath}/temp/pic.jpg`,
 				new Buffer(image, 'base64')
 			);
 			const file = new Parse.File(
 				'pic.jpg',
-				fs.readFileSync('./pic.jpg'),
+				fs.readFileSync(`${appRootPath}/temp/pic.jpg`),
 				'image/jpg'
 			);
 
