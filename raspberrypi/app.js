@@ -3,6 +3,7 @@ const Readline = require('@serialport/parser-readline');
 const console = require('better-console');
 const RaspiCam = require('raspicam');
 const rp = require('request-promise-native');
+const fs = require('fs');
 
 const isWin = process.platform === 'win32';
 const parser = new Readline();
@@ -106,6 +107,10 @@ function updateClientStatus() {
 	return new Promise(async (resolve, reject) => {
 		try {
 			console.info('UPDATE STATUS');
+
+			const currentImage = fs.readFileSync('./pic.jpg');
+			status.image = new Buffer(currentImage).toString('base64');
+
 			const options = {
 				method: 'POST',
 				url: `${baseUrl}/api/v1/datas/${clientId}/update/staus`,
