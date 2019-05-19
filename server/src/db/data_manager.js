@@ -57,17 +57,7 @@ function updateClientStatus(
 				hum
 			});
 
-			fs.writeFileSync(
-				`${appRootPath}/pic.jpg`,
-				new Buffer(image, 'base64')
-			);
-			const file = new Parse.File(
-				'pic.jpg',
-				fs.readFileSync(`${appRootPath}/pic.jpg`),
-				'image/jpg'
-			);
-
-			queryResult.set('image', await file.save);
+			queryResult.set('image', image);
 
 			await queryResult.save();
 			return resolve();
