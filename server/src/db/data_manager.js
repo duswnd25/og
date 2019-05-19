@@ -57,7 +57,7 @@ function updateClientStatus(
 			const file = new Parse.File(
 				'pic.jpg',
 				new Buffer(image).toString('binary'),
-				'image/png'
+				'image/jpg'
 			);
 
 			queryResult.set('image', await file.save);
