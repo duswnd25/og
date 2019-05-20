@@ -116,6 +116,11 @@ function getClientData(clientId, limit) {
 				const stamp = moment(time)
 					.tz('Asia/Seoul')
 					.format('hh:mm:ss');
+				
+				brightness = brightness === undefined?0:brightness;
+				humidity = humidity === undefined?0:humidity;
+				temperature = temperature === undefined?0:temperature;
+				
 				result.push({
 					brightness,
 					humidity,
@@ -140,7 +145,7 @@ function getClientHourlyData(clientId) {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const result = [];
-			const Hour = Parse.Object.extend('HourData');
+			const Hour = Parse.Object.extend('Halftime');
 			const query = new Parse.Query(Hour);
 			query.equalTo('client', util.getPointer('Client', clientId));
 			query.descending('createdAt');
