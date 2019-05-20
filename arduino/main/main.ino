@@ -68,7 +68,7 @@ void switchHardwareStatus(int target, bool flag)
 	}
 
 	isHardwareStatusChange = true;
-	digitalWrite(target, flag ? LOW : HIGH);
+	digitalWrite(target, flag ? HIGH : LOW);
 }
 
 void parsingCommand(String sData)
