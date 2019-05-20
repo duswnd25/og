@@ -4,6 +4,7 @@ const console = require('better-console');
 const RaspiCam = require('raspicam');
 const rp = require('request-promise-native');
 const fs = require('fs');
+const moment = require('moment');
 
 const isWin = process.platform === 'win32';
 const parser = new Readline();
@@ -199,7 +200,9 @@ async function updateConfig() {
 
 			const command = `${status.brightnessSetValue}/${status.temperatureSetValue}/${status.humiditySetValue}/${
 				status.automode === true ? 1 : 0
-			}/${status.water === true ? 1 : 0}/${status.fan === true ? 1 : 0}/${status.led === true ? 1 : 0}/`;
+			}/${status.water === true ? 1 : 0}/${status.fan === true ? 1 : 0}/${
+				status.led === true ? 1 : 0
+			}/${moment().format('HH')}/`;
 			port.write(command);
 			return resolve();
 		} catch (error) {
