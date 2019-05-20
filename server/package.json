@@ -1,7 +1,7 @@
 {
-	"name": "og",
-	"version": "1.8.0",
-	"description": "open agriculture",
+	"name": "og-server",
+	"version": "1.9.0",
+	"description": "open agriculture project og's web server",
 	"private": true,
 	"homepage": "https://github.com/duswnd25/og",
 	"author": "YeonJung Kim",
