@@ -6,7 +6,7 @@ module.exports = {
 			max_memory_restart: '512',
 			autorestart: true,
 			name: 'OG',
-			script: `${appRootPath}/server.js`,
+			script: `${appRootPath}/app.js`,
 			instances: 1,
 			// 개발 환경
 			env: {
