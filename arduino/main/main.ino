@@ -3,22 +3,24 @@
 #include <DHT_U.h>
 #include <SoftwareSerial.h>
 
-#define FAN 6
-#define LED 7
-#define HUMIDITY 10
-#define STATUS_LED 13
-#define TEM_HUM_SENSOR 3
+#define FAN 2
+#define LED 3
+#define WATER 4
+#define STATUS_LED 5
+#define TEM_HUM_SENSOR 6
+#define BRIGHT_SENSOR A0
 
 // hardware enable value set
 int brightnessSetValue = 500;
 int temperatureSetValue = 30;
 int humiditySetValue = 50;
+int hour = 0;
 
 // control hardware flag
 bool isAutoMode = true;
 bool isFanEnable = true;
 bool isLedEnable = true;
-bool isHumEnable = true;
+bool isWaterEnable = true;
 bool isCommandInput = false;
 
 // value change flag
@@ -47,14 +49,14 @@ void switchHardwareStatus(int target, bool flag)
 		}
 		isFanEnable = flag;
 	}
-	else if (target == HUMIDITY)
+	else if (target == WATER)
 	{
-		if (isHumEnable == flag)
+		if (isWaterEnable == flag)
 		{
 			return;
 		}
 
-		isHumEnable = flag;
+		isWaterEnable = flag;
 	}
 	else if (target == STATUS_LED)
 	{
@@ -79,7 +81,7 @@ void parsingCommand(String sData)
 	int commandIndex = 0;
 	int tokenIndex = 0;
 
-	// brightnessSetValue/temperatureSetValue/humiditySetValue/automode/humidity/fan/led/
+	// brightnessSetValue/temperatureSetValue/humiditySetValue/automode/water/fan/led/hour/
 	// default command is 500/50/50/1/1/1/1/
 	// don't forget to add / to last
 
@@ -111,7 +113,7 @@ void parsingCommand(String sData)
 			case 4:
 				if (!isAutoMode)
 				{
-					switchHardwareStatus(HUMIDITY, (sTemp.toInt() == 1));
+					switchHardwareStatus(WATER, (sTemp.toInt() == 1));
 				}
 				break;
 			case 5:
@@ -124,6 +126,12 @@ void parsingCommand(String sData)
 				if (!isAutoMode)
 				{
 					switchHardwareStatus(LED, (sTemp.toInt() == 1));
+				}
+				break;
+			case 7:
+				if (!isAutoMode)
+				{
+					hour = sTemp.toInt();
 				}
 				break;
 			default:
@@ -160,7 +168,7 @@ void setup()
 
 	pinMode(FAN, OUTPUT);
 	pinMode(LED, OUTPUT);
-	pinMode(HUMIDITY, OUTPUT);
+	pinMode(WATER, OUTPUT);
 	pinMode(STATUS_LED, OUTPUT);
 }
 
@@ -188,7 +196,7 @@ void loop()
 	int temperatureValue = 0;
 
 	// brightness value
-	brightnessValue = analogRead(A0);
+	brightnessValue = analogRead(BRIGHT_SENSOR);
 
 	delay(MIN_DEPLAY); // delay for hum temp sensor's min delay
 	sensors_event_t event;
@@ -210,9 +218,30 @@ void loop()
 	// change status in automode
 	if (isAutoMode)
 	{
-		switchHardwareStatus(LED, brightnessValue < brightnessSetValue);
-		switchHardwareStatus(FAN, temperatureValue > temperatureSetValue);
-		switchHardwareStatus(HUMIDITY, humidityValue < humiditySetValue);
+		if (7 < hour && hour < 18)
+		{
+			switchHardwareStatus(LED, brightnessSetValue > brightnessValue);
+		}
+		else
+		{
+			switchHardwareStatus(LED, false);
+		}
+
+		if (temperatureSetValue < temperatureValue)
+		{
+			switchHardwareStatus(FAN, true);
+			switchHardwareStatus(WATER, true);
+		}
+		else
+		{
+			switchHardwareStatus(FAN, false);
+			switchHardwareStatus(WATER, false);
+		}
+
+		if (humiditySetValue < humidityValue)
+		{
+			switchHardwareStatus(WATER, false);
+		}
 	}
 
 	// print device status
@@ -224,8 +253,8 @@ void loop()
 		Serial.println(isFanEnable ? "TRUE" : "FALSE");
 		Serial.print("LED ENABLE : ");
 		Serial.println(isLedEnable ? "TRUE" : "FALSE");
-		Serial.print("HUM ENABLE : ");
-		Serial.println(isHumEnable ? "TRUE" : "FALSE");
+		Serial.print("WATER ENABLE : ");
+		Serial.println(isWaterEnable ? "TRUE" : "FALSE");
 	}
 
 	// print sensor set value
