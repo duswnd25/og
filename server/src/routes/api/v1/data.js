@@ -8,11 +8,11 @@ const dataDb = reqlib('/src/db/data_manager.js');
 
 router.post('/:clientId/update/staus', async (req, res) => {
 	const { clientId } = req.params;
-	const { key, brightness, humidity, temperature, automode, fan, led, hum, image } = req.body;
+	const { key, brightness, humidity, temperature, automode, fan, led, water, image } = req.body;
 
 	dataDb.createLog(clientId, key, brightness, humidity, temperature);
 
-	dataDb.updateClientStatus(clientId, key, brightness, humidity, temperature, automode, fan, led, hum, image);
+	dataDb.updateClientStatus(clientId, key, brightness, humidity, temperature, automode, fan, led, water, image);
 
 	return res.status(200).json({ result: 'upload finish' });
 });

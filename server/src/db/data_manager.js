@@ -23,7 +23,7 @@ function createLog(clientId, key, brightness, humidity, temperature) {
 	});
 }
 
-function updateClientStatus(clientId, key, brightness, humidity, temperature, automode, fan, led, hum, image) {
+function updateClientStatus(clientId, key, brightness, humidity, temperature, automode, fan, led, water, image) {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const Client = Parse.Object.extend('Client');
@@ -41,7 +41,7 @@ function updateClientStatus(clientId, key, brightness, humidity, temperature, au
 				automode,
 				fan,
 				led,
-				hum
+				water
 			});
 
 			queryResult.set('image', image);
