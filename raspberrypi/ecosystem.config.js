@@ -3,7 +3,7 @@ const appRootPath = require('app-root-path');
 module.exports = {
 	apps: [
 		{
-			max_memory_restart: '486M',
+			max_memory_restart: '512',
 			autorestart: true,
 			name: 'OG',
 			script: `${appRootPath}/server.js`,

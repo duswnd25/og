@@ -8,47 +8,41 @@ const fs = require('fs');
 const isWin = process.platform === 'win32';
 const parser = new Readline();
 
-const baseUrl =
-	process.env.NODE_ENV === 'production'
-		? 'https://og-board.herokuapp.com'
-		: 'http://localhost:3000';
+const baseUrl = isWin === false ? 'https://og-board.herokuapp.com' : 'http://localhost:3000';
 const clientId = 'mCcaI95vzy';
 const clientKey =
 	'3bb8d4f4ccf57c5c927cb54191f77618e987b644d60d419f862c8f280630fff9b157422e27bd9b118921543d58c4506b2acef2d3f53544f0722187219e2a88ac';
 
-const cameraOptions = {
+const camera = new RaspiCam({
 	width: 600,
 	height: 420,
 	awb: 'off',
 	encoding: 'jpg',
 	output: './pic.jpg',
-	q: 50,
+	q: 80,
 	mode: 'photo',
 	nopreview: true,
 	th: '0:0:0'
-};
-
-const camera = new RaspiCam(cameraOptions);
-
-// listen for the "start" event triggered when the start method has been successfully initiated
-camera.on('start', () => {
-	// do stuff
 });
 
-// listen for the "read" event triggered when each new photo/video is saved
-camera.on('read', (err, timestamp, filename) => {
-	// do stuff
-});
-
-// listen for the "stop" event triggered when the stop method was called
-camera.on('stop', () => {
-	// do stuff
-});
-
-// listen for the process to exit when the timeout has been reached
-camera.on('exit', () => {
-	// do stuff
-});
+camera
+	.on('start', () => {
+		console.info('CAMERA START');
+	})
+	.on('read', (err, timestamp, filename) => {
+		if (err) {
+			console.error('CAMERA ERROR');
+			console.error(err);
+		} else {
+			console.info(`TAKE PIC : ${filename} at ${timestamp}`);
+		}
+	})
+	.on('stop', () => {
+		console.info('CAMERA STOP');
+	})
+	.on('exit', () => {
+		console.info('CAMERA EXIT');
+	});
 
 const status = {
 	brightnessSetValue: 500,
@@ -58,10 +52,9 @@ const status = {
 	temperatureValue: 24,
 	humidityValue: 50,
 	automode: true,
-	humidity: true,
 	fan: true,
 	led: true,
-	hum: true,
+	water: true,
 	image: ''
 };
 
@@ -100,14 +93,12 @@ parser.on('data', line => {
 			status.fan = log.value === 'TRUE';
 		} else if (log.command === 'LED ENABLE') {
 			status.led = log.value === 'TRUE';
-		} else if (log.command === 'HUM ENABLE') {
-			status.humidity = log.value === 'TRUE';
+		} else if (log.command === 'WATER ENABLE') {
+			status.water = log.value === 'TRUE';
 		} else if (log.command === 'BRIGHTNESS SET') {
 			status.brightnessSetValue = parseInt(log.value, 10);
 		} else if (log.command === 'TEMPERATURE SET') {
 			status.temperatureSetValue = parseInt(log.value, 10);
-		} else if (log.command === 'HUMIDITY SET') {
-			status.humiditySetValue = parseInt(log.value, 10);
 		} else if (log.command === 'BRIGHTNESS') {
 			status.brightnessValue = parseInt(log.value, 10);
 		} else if (log.command === 'TEMPERATURE') {
@@ -126,8 +117,11 @@ function updateClientStatus() {
 	return new Promise(async (resolve, reject) => {
 		try {
 			console.info('UPDATE STATUS');
+
 			camera.start();
+
 			const currentImage = fs.readFileSync('./pic.jpg');
+			// eslint-disable-next-line no-buffer-constructor
 			status.image = new Buffer(currentImage).toString('base64');
 
 			const options = {
@@ -139,12 +133,12 @@ function updateClientStatus() {
 				form: {
 					key: clientKey,
 					brightness: status.brightnessValue,
-					humidity: status.humidity,
+					humidity: status.humidityValue,
 					temperature: status.temperatureValue,
 					automode: status.automode,
 					fan: status.fan,
 					led: status.led,
-					hum: status.hum,
+					water: status.water,
 					image: status.image
 				}
 			};
@@ -197,21 +191,15 @@ async function updateConfig() {
 			const config = JSON.parse(await rp(options));
 
 			status.brightnessSetValue = parseInt(config.brightnessSetValue, 10);
-			status.humiditySetValue = parseInt(config.humiditySetValue, 10);
-			status.temperatureSetValue = parseInt(
-				config.temperatureSetValue,
-				10
-			);
+			status.temperatureSetValue = parseInt(config.temperatureSetValue, 10);
 			status.automode = config.automode === 'true';
 			status.fan = config.fan === 'true';
 			status.led = config.led === 'true';
-			status.led = config.hum === 'true';
+			status.water = config.water === 'true';
 
-			const command = `${status.brightnessSetValue}/${
-				status.temperatureSetValue
-			}/${status.humiditySetValue}/${status.automode === true ? 1 : 0}/${
-				status.hum === true ? 1 : 0
-			}/${status.fan === true ? 1 : 0}/${status.led === true ? 1 : 0}/`;
+			const command = `${status.brightnessSetValue}/${status.temperatureSetValue}/${status.humiditySetValue}/${
+				status.automode === true ? 1 : 0
+			}/${status.water === true ? 1 : 0}/${status.fan === true ? 1 : 0}/${status.led === true ? 1 : 0}/`;
 			port.write(command);
 			return resolve();
 		} catch (error) {

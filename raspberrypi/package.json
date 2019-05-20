@@ -1,21 +1,27 @@
 {
 	"name": "og-raspberrypi",
 	"version": "1.0.0",
-	"description": "",
+	"private": true,
+	"description": "open agriculture project og's raspberrypi",
+	"homepage": "https://github.com/duswnd25/og",
 	"main": "index.js",
 	"scripts": {
-		"start": "./node_modules/.bin/forever start ./app.js",
+		"preinstall": "npm i -g pm2",
+		"start": "pm2-runtime start ecosystem.config.js",
 		"dev": "./node_modules/.bin/nodemon app",
 		"lint": "./node_modules/.bin/eslint -c .eslintrc . --fix",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"check": "./node_modules/.bin/npm-check -u"
 	},
-	"author": "",
-	"license": "ISC",
+	"engines": {
+		"node": "12.2.0",
+		"npm": "6.9.0"
+	},
+	"author": "YeonJung Kim",
+	"license": "MIT",
 	"dependencies": {
 		"@serialport/parser-readline": "^2.0.2",
 		"app-root-path": "^2.2.1",
 		"better-console": "^1.0.1",
-		"forever": "^1.0.0",
 		"raspicam": "^0.2.14",
 		"request": "^2.88.0",
 		"request-promise-native": "^1.0.7",
