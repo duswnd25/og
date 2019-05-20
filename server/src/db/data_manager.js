@@ -1,6 +1,5 @@
 const appRootPath = require('app-root-path');
 const moment = require('moment-timezone');
-const fs = require('fs');
 
 const reqlib = appRootPath.require;
 
@@ -10,13 +9,12 @@ const util = reqlib('/src/core/utils.js');
 function createLog(clientId, key, brightness, humidity, temperature) {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const clientObject = await util.getClientObject(clientId, key);
 			const Data = Parse.Object.extend('Data');
 			const status = new Data();
 			status.set('brightness', Number.parseInt(brightness, 10));
 			status.set('humidity', Number.parseInt(humidity, 10));
 			status.set('temperature', Number.parseInt(temperature, 10));
-			status.set('client',  util.getPointer('Client', clientId));
+			status.set('client', await util.getClientObject(clientId, key));
 			await status.save();
 			return resolve();
 		} catch (error) {
@@ -25,18 +23,7 @@ function createLog(clientId, key, brightness, humidity, temperature) {
 	});
 }
 
-function updateClientStatus(
-	clientId,
-	key,
-	brightness,
-	humidity,
-	temperature,
-	automode,
-	fan,
-	led,
-	hum,
-	image
-) {
+function updateClientStatus(clientId, key, brightness, humidity, temperature, automode, fan, led, hum, image) {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const Client = Parse.Object.extend('Client');
@@ -67,8 +54,7 @@ function updateClientStatus(
 	});
 }
 
-// update pfc status
-function updateHalftimeValue(clientId, key, brightness, humidity, temperature) {
+function createHalftimeLog(clientId, key, brightness, humidity, temperature) {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const clientObject = await util.getClientObject(clientId, key);
@@ -111,11 +97,11 @@ function getClientData(clientId, limit) {
 				const stamp = moment(time)
 					.tz('Asia/Seoul')
 					.format('hh:mm:ss');
-				
-				brightness = brightness === undefined?0:brightness;
-				humidity = humidity === undefined?0:humidity;
-				temperature = temperature === undefined?0:temperature;
-				
+
+				brightness = brightness === undefined ? 0 : brightness;
+				humidity = humidity === undefined ? 0 : humidity;
+				temperature = temperature === undefined ? 0 : temperature;
+
 				result.push({
 					brightness,
 					humidity,
@@ -136,7 +122,7 @@ function getClientData(clientId, limit) {
 	});
 }
 
-function getClientHourlyData(clientId) {
+function getClientHalftimeData(clientId) {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const result = [];
@@ -160,18 +146,10 @@ function getClientHourlyData(clientId) {
 						.format()
 				};
 
-				const count = parseInt(hourDataList[index].get('count'), 10);
-				temp.brightness =
-					parseInt(hourDataList[index].get('brightness'), 10) / count;
-				temp.humidity =
-					parseFloat(hourDataList[index].get('humidity')) / count;
-				temp.temperature =
-					parseFloat(hourDataList[index].get('temperature')) / count;
+				temp.brightness = parseInt(hourDataList[index].get('brightness'), 10) || 0;
+				temp.humidity = parseInt(hourDataList[index].get('humidity'), 10) || 0;
+				temp.temperature = parseInt(hourDataList[index].get('temperature'), 10) || 0;
 
-				temp.brightness = temp.brightness === undefined?0:temp.brightness;
-				temp.humidity = temp.humidity === undefined?0:temp.humidity;
-				temp.temperature = temp.temperature === undefined?0:temp.temperature;
-				
 				temp.stamp = moment(hourDataList[index].get('createdAt'))
 					.tz('Asia/Seoul')
 					.format('DD일 hh시');
@@ -219,8 +197,8 @@ function getClientConfig(clientId) {
 module.exports = {
 	createLog,
 	getClientData,
-	getClientHourlyData,
-	updateHalftimeValue,
+	getClientHalftimeData,
+	createHalftimeLog,
 	updateClientStatus,
 	getClientStatus,
 	getClientConfig

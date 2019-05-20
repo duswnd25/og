@@ -32,7 +32,6 @@ router.get('/current', async (req, res) => {
 
 // 전체
 router.get('/total', async (req, res) => {
-	const clientId = 'mCcaI95vzy';
 	const clientDataArray = await dbManager.getClientData(clientId, 0);
 	const data = {
 		client: [clientId],
@@ -55,7 +54,7 @@ router.get('/table', async (req, res) => {
 
 // 시간별
 router.get('/halftime', async (req, res) => {
-	const clientDataArray = await dbManager.getClientHourlyData(clientId);
+	const clientDataArray = await dbManager.getClientHalftimeData(clientId);
 	const data = {
 		client: [clientId],
 		log: util.generateDisplayData(clientDataArray)
