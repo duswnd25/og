@@ -20,13 +20,13 @@ router.get('/', async (req, res) => {
 });
 
 // 실시간
-router.get('/current', async (req, res) => {
+router.get('/realtime', async (req, res) => {
 	const clientDataArray = await dbManager.getClientData(clientId, 50);
 	const data = {
 		client: [clientId],
 		log: util.generateDisplayData(clientDataArray)
 	};
-	data.page = 'index';
+	data.page = 'realtime';
 	return res.status(200).render('layout', { data });
 });
 
