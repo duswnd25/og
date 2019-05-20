@@ -1,6 +1,4 @@
 /* eslint-disable consistent-return */
-const crypto = require('crypto');
-const console = require('better-console');
 
 Parse.Cloud.afterSave('Data', request => {
 	const brightness = request.object.get('brightness');
@@ -16,8 +14,8 @@ Parse.Cloud.afterSave('Data', request => {
 	if (humidity === undefined) {
 		request.object.set('humidity', 0);
 		isDataChange = true;
-	}	
-  if (temperature === undefined) {
+	}
+	if (temperature === undefined) {
 		request.object.set('temperature', 0);
 		isDataChange = true;
 	}
