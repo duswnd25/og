@@ -259,22 +259,11 @@ const config = {
 	}
 };
 
-const valueList = [
-	'brightness-average-value',
-	'humidity-average-value',
-	'temperature-average-value'
-];
+const valueList = ['brightness-average-value', 'humidity-average-value', 'temperature-average-value'];
 
 // ============================ 온도
-const temperatureContext = document
-	.getElementById('chartLinePurple')
-	.getContext('2d');
-const temperatureStroke = temperatureContext.createLinearGradient(
-	0,
-	230,
-	0,
-	50
-);
+const temperatureContext = document.getElementById('chartLinePurple').getContext('2d');
+const temperatureStroke = temperatureContext.createLinearGradient(0, 230, 0, 50);
 
 temperatureStroke.addColorStop(1, 'rgba(72,72,176,0.2)');
 temperatureStroke.addColorStop(0.2, 'rgba(72,72,176,0.0)');
@@ -311,9 +300,7 @@ const temperatureConfig = {
 let temperatureChart = null;
 
 // ============================ 밝기
-const brightnessContext = document
-	.getElementById('brightness-chart')
-	.getContext('2d');
+const brightnessContext = document.getElementById('brightness-chart').getContext('2d');
 
 const brightnessStroke = brightnessContext.createLinearGradient(0, 230, 0, 50);
 
@@ -351,9 +338,7 @@ const brightnessConfig = {
 let brightnessChart = null;
 
 // ============================ 습도
-const humidityContext = document
-	.getElementById('humidity-chart')
-	.getContext('2d');
+const humidityContext = document.getElementById('humidity-chart').getContext('2d');
 
 const humidityGradient = humidityContext.createLinearGradient(0, 230, 0, 50);
 
@@ -389,9 +374,7 @@ const humidityConfig = {
 let humidityChart = null;
 
 // ============================ 전체
-const totalContext = document
-	.getElementById('total-status-chart')
-	.getContext('2d');
+const totalContext = document.getElementById('total-status-chart').getContext('2d');
 
 const totalGradientStroke = totalContext.createLinearGradient(0, 230, 0, 50);
 
@@ -412,11 +395,7 @@ let totalChart = null;
 
 chartData = {
 	initData(input) {
-		this.updateAverageValue(
-			input.average.brightness,
-			input.average.humidity,
-			input.average.temperature
-		);
+		this.updateAverageValue(input.average.brightness, input.average.humidity, input.average.temperature);
 
 		brightnessConfig.data.labels = input.chart.label;
 		brightnessConfig.data.datasets[0].data = input.chart.brightness.value;
@@ -461,15 +440,15 @@ chartData = {
 		for (let index = 0; index < valueList.length; index += 1) {
 			let text = '';
 			switch (index) {
-				case 0:
-					text = `${brightness} LUX`;
-					break;
-				case 1:
-					text = `${humidity} %`;
-					break;
-				case 2:
-					text = `${temperature} C`;
-					break;
+			case 0:
+				text = `${parseInt(brightness, 10)} LUX`;
+				break;
+			case 1:
+				text = `${parseInt(humidity, 10)} %`;
+				break;
+			case 2:
+				text = `${parseInt(temperature, 10)} C`;
+				break;
 			}
 			document.getElementById(valueList[index]).innerText = text;
 		}
