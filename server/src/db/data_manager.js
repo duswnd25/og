@@ -71,17 +71,11 @@ function updateClientStatus(
 function updateHalftimeValue(clientId, key, brightness, humidity, temperature) {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const Client = Parse.Object.extend('Client');
-			const query = new Parse.Query(Client);
-			const clientObject = await query.get(clientId);
-
-			if (clientObject.get('key') !== key) {
-				return reject();
-			}
+			const clientObject = await util.getClientObject(clientId, key);
 
 			const Halftime = Parse.Object.extend('Halftime');
 			const recentData = new Halftime();
-			recentData.set('client', util.getPointer('Client', clientId));
+			recentData.set('client', clientObject);
 			recentData.set('brightness', parseInt(brightness, 10));
 			recentData.set('humidity', parseInt(humidity, 10));
 			recentData.set('temperature', parseInt(temperature, 10));
@@ -174,6 +168,10 @@ function getClientHourlyData(clientId) {
 				temp.temperature =
 					parseFloat(hourDataList[index].get('temperature')) / count;
 
+				brightness = brightness === undefined?0:brightness;
+				humidity = humidity === undefined?0:humidity;
+				temperature = temperature === undefined?0:temperature;
+				
 				temp.stamp = moment(hourDataList[index].get('createdAt'))
 					.tz('Asia/Seoul')
 					.format('DD일 hh시');
