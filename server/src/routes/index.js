@@ -10,11 +10,15 @@ const clientId = 'mCcaI95vzy';
 
 // 기본
 router.get('/', async (req, res) => {
-	const clientDataArray = await dbManager.getClientData(clientId, 50);
+	const clientStatus = await dbManager.getClientStatus(clientId);
+	const clientConfig = await dbManager.getClientConfig(clientId);
+
 	const data = {
 		client: [clientId],
-		log: util.generateDisplayData(clientDataArray)
+		status: clientStatus,
+		config: clientConfig
 	};
+
 	data.page = 'index';
 	return res.status(200).render('layout', { data });
 });
@@ -59,7 +63,7 @@ router.get('/halftime', async (req, res) => {
 		client: [clientId],
 		log: util.generateDisplayData(clientDataArray)
 	};
-	data.page = 'hour';
+	data.page = 'halftime';
 	return res.status(200).render('layout', { data });
 });
 

@@ -174,7 +174,9 @@ function getClientStatus(clientId) {
 			const Client = Parse.Object.extend('Client');
 			const query = new Parse.Query(Client);
 			const queryResult = await query.get(clientId);
-			return resolve(queryResult.get('status'));
+			const status = queryResult.get('status');
+			status.image = queryResult.get('image');
+			return resolve(status);
 		} catch (error) {
 			return reject(error);
 		}
