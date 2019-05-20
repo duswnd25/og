@@ -104,9 +104,9 @@ function getClientData(clientId, limit) {
 			const result = [];
 
 			for (let index = 0; index < queryResults.length; index += 1) {
-				const brightness = queryResults[index].get('brightness');
-				const humidity = queryResults[index].get('humidity');
-				const temperature = queryResults[index].get('temperature');
+				let brightness = queryResults[index].get('brightness');
+				let humidity = queryResults[index].get('humidity');
+				let temperature = queryResults[index].get('temperature');
 				const time = queryResults[index].createdAt;
 				const stamp = moment(time)
 					.tz('Asia/Seoul')
@@ -168,9 +168,9 @@ function getClientHourlyData(clientId) {
 				temp.temperature =
 					parseFloat(hourDataList[index].get('temperature')) / count;
 
-				brightness = brightness === undefined?0:brightness;
-				humidity = humidity === undefined?0:humidity;
-				temperature = temperature === undefined?0:temperature;
+				temp.brightness = temp.brightness === undefined?0:temp.brightness;
+				temp.humidity = temp.humidity === undefined?0:temp.humidity;
+				temp.temperature = temp.temperature === undefined?0:temp.temperature;
 				
 				temp.stamp = moment(hourDataList[index].get('createdAt'))
 					.tz('Asia/Seoul')
