@@ -123,7 +123,7 @@ function updateClientStatus() {
 
 			const currentImage = fs.readFileSync('./pic.jpg');
 			// eslint-disable-next-line no-buffer-constructor
-			status.image = new Buffer(currentImage).toString('base64');
+			status.image = new Buffer.alloc(currentImage).toString('base64');
 
 			const options = {
 				method: 'POST',
