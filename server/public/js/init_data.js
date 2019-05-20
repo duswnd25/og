@@ -462,13 +462,13 @@ chartData = {
 			let text = '';
 			switch (index) {
 				case 0:
-					text = `${brightness.toFixed(0)} LUX`;
+					text = `${brightness} LUX`;
 					break;
 				case 1:
-					text = `${humidity.toFixed(0)} %`;
+					text = `${humidity} %`;
 					break;
 				case 2:
-					text = `${temperature.toFixed(0)} C`;
+					text = `${temperature} C`;
 					break;
 			}
 			document.getElementById(valueList[index]).innerText = text;
