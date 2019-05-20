@@ -16,7 +16,7 @@ function createLog(clientId, key, brightness, humidity, temperature) {
 			status.set('brightness', Number.parseInt(brightness, 10));
 			status.set('humidity', Number.parseInt(humidity, 10));
 			status.set('temperature', Number.parseInt(temperature, 10));
-			status.set('client', clientObject);
+			status.set('client',  util.getPointer('Client', clientId));
 			await status.save();
 			return resolve();
 		} catch (error) {
@@ -81,6 +81,7 @@ function updateHalftimeValue(clientId, key, brightness, humidity, temperature) {
 
 			const Halftime = Parse.Object.extend('Halftime');
 			const recentData = new Halftime();
+			recentData.set('client', util.getPointer('Client', clientId));
 			recentData.set('brightness', parseInt(brightness, 10));
 			recentData.set('humidity', parseInt(humidity, 10));
 			recentData.set('temperature', parseInt(temperature, 10));
