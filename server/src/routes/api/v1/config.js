@@ -14,9 +14,7 @@ router.get('/:clientId/configs', async (req, res) => {
 		limit = 50;
 	}
 
-	const result = util.generateDisplayData(
-		await dataDb.getClientData(clientId, limit)
-	);
+	const result = util.generateDisplayData(await dataDb.getClientData(clientId, limit));
 	return res.status(200).json(result);
 });
 

@@ -29,23 +29,20 @@
 							</tr>
 						</thead>
 						<tbody>
-							<%= JSON.stringify(data.log.chart.Brightness) %> <%
-							for(var index = data.log.chart.time.length -1; index
-							>=0 ; index-=1){%>
+							<%= JSON.stringify(data.log.chart.Brightness) %> <% for(var index =
+							data.log.chart.time.length -1; index >=0 ; index-=1){%>
 							<tr>
 								<td class="text-center">
 									<%= data.client %>
 								</td>
 								<td class="text-center">
-									<%= data.log.chart.brightness.value[index]
-									%>
+									<%= data.log.chart.brightness.value[index] %>
 								</td>
 								<td class="text-center">
 									<%= data.log.chart.humidity.value[index] %>
 								</td>
 								<td class="text-center">
-									<%= data.log.chart.temperature.value[index]
-									%>
+									<%= data.log.chart.temperature.value[index] %>
 								</td>
 								<td class="text-center">
 									<%= data.log.chart.time[index] %>

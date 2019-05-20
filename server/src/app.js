@@ -42,9 +42,7 @@ if (config.isProduction()) {
 	app.use(bugsnagMiddleware.errorHandler);
 }
 
-const { parseServerConfig, parseDashboardConfig } = reqlib(
-	'/src/config/parse.config.js'
-);
+const { parseServerConfig, parseDashboardConfig } = reqlib('/src/config/parse.config.js');
 
 /** :::::::::::::::::: EXPRESS SETUP * */
 app.use(timeout('20s'));
