@@ -23,11 +23,10 @@ const config = reqlib('/src/config/global.config');
 
 if (config.isDevelopment()) {
 	config.devEnvSetup();
-	
+	app.use(logger('dev'));
 	console.info('SERVER START IN DEV MODE');
 }
 
-app.use(logger('dev'));
 
 if (config.isProduction()) {
 	config.prodEnvSetup();
