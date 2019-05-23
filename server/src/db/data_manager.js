@@ -34,9 +34,6 @@ function updateClientStatus(clientId, key, brightness, humidity, temperature, au
 				return reject();
 			}
 
-			console.info(humidity);
-			console.info(temperature);
-			
 			queryResult.set('status', {
 				brightness,
 				humidity,
