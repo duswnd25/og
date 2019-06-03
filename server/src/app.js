@@ -27,6 +27,7 @@ if (config.isDevelopment()) {
 	console.info('SERVER START IN DEV MODE');
 }
 
+
 if (config.isProduction()) {
 	config.prodEnvSetup();
 	console.info('SERVER START IN PRODUCTION');
